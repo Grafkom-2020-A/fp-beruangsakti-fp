@@ -68,6 +68,8 @@ function main() {
         return ayamp1
     }, 1000);
 
+
+
     document.addEventListener( 'keydown', onKeyDown, false );
     function onKeyDown(event) {
         var xspeed = 1;
@@ -75,15 +77,22 @@ function main() {
         var vright = new THREE.Vector3(0, 0, 1);
         if(event.keyCode == 39) {
             ayamp1.position.x += xspeed;
+            ayamp1.rotation.y = 0;
+            ayamp1.rotation.y += 1.55;
         }
         if(event.keyCode == 37) {
             ayamp1.position.x -= xspeed;
+            ayamp1.rotation.y = 0;
+            ayamp1.rotation.y -= 1.55;
         }
         if(event.keyCode == 38) {
             ayamp1.position.z -= zspeed;
+            ayamp1.rotation.y = 0;
+            ayamp1.rotation.y -= 3.10;
         }
         if(event.keyCode == 40) {
             ayamp1.position.z += zspeed;
+            ayamp1.rotation.y = 0;
         }
     }
     
