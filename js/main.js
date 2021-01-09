@@ -12,7 +12,7 @@ function main() {
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-    camera.position.set(17, 17, 15);
+    camera.position.set(30, 20, 30);
     camera.lookAt(0, 0, 0);
 
     const scene = new THREE.Scene();
@@ -20,9 +20,9 @@ function main() {
 
 
     // controls
-    const controls = new OrbitControls(camera, canvas);
-    controls.target.set(0, 3, 0);
-    controls.update();
+    // const controls = new OrbitControls(camera, canvas);
+    // controls.target.set(0, 3, 0);
+    // controls.update();
 
     // light
     {
@@ -50,7 +50,7 @@ function main() {
         });
     }
 
-    const planegeom = new THREE.PlaneBufferGeometry(40, 40, 5, 5);
+    const planegeom = new THREE.PlaneBufferGeometry(50, 50, 5, 5);
     const planemat = new THREE.MeshPhongMaterial({
         color: 0x196309,
         // side: THREE.DoubleSide
@@ -75,22 +75,22 @@ function main() {
         var xspeed = 1;
         var zspeed = 1;
         var vright = new THREE.Vector3(0, 0, 1);
-        if(event.keyCode == 39) {
+        if(event.keyCode == 39 && ayamp1.position.x < 24 ) {
             ayamp1.position.x += xspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y += 1.55;
         }
-        if(event.keyCode == 37) {
+        if(event.keyCode == 37 && ayamp1.position.x > -24) {
             ayamp1.position.x -= xspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y -= 1.55;
         }
-        if(event.keyCode == 38) {
+        if(event.keyCode == 38 && ayamp1.position.z > -24) {
             ayamp1.position.z -= zspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y -= 3.10;
         }
-        if(event.keyCode == 40) {
+        if(event.keyCode == 40 && ayamp1.position.z < 24) {
             ayamp1.position.z += zspeed;
             ayamp1.rotation.y = 0;
         }
