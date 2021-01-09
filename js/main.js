@@ -54,7 +54,6 @@ function main() {
 
         gltfLoader.load('obj/jagung.gltf', (gltf) => {
             const root = gltf.scene;
-            root.position.set(2, 0, 0);
             scene.add(root);
         });
     }
@@ -81,11 +80,28 @@ function main() {
 
     jagung = setTimeout(function(){ // nunggu async gltf di load 1 detik
         jagung = scene.getObjectByName( "Jagung" );
-        jagung.position.set(0, 1, 0);
+        ayamp1.position.set(0, 0, 0);
         console.log(jagung);
         return jagung
     }, 1000);
 
+    
+    // jagung random position
+    var posx = 24;
+    var netx = -24;
+    var posz = 24;
+    var netz = -24;
+    var jagungPositionX = 0;
+    var jagungPositionZ = 0;
+    function spawnJagung() {
+        jagungPositionX =  Math.floor(Math.random() * (posx - netx + 1)) + netx;
+        jagungPositionZ =  Math.floor(Math.random() * (posz - netz + 1)) + netz;
+
+        console.log(jagungPositionX, jagungPositionZ);
+        jagung.position.set(jagungPositionX, 1, jagungPositionZ);
+        // jagung.position.x = jagungPositionX;
+        // jagung.position.z = jagungPositionZ;
+    }
 
     // animasi jagung
     var upJagung = true;
@@ -106,13 +122,33 @@ function main() {
         }
     }
 
+    // collision
+    function ayamJagungCollision() {
+        if (ayamp1.position.x == jagung.position.x - 1 &&
+            ayamp1.position.z == jagung.position.z) {
+            return true;
+        }else if (
+            ayamp1.position.x == jagung.position.x + 1 &&
+            ayamp1.position.z == jagung.position.z ){
+            return true;
+        }else if (
+            ayamp1.position.z == jagung.position.z + 1 &&
+            ayamp1.position.x == jagung.position.x){
+            return true;
+        }else if (
+            ayamp1.position.z == jagung.position.z - 1 &&
+            ayamp1.position.x == jagung.position.x){
+            return true;
+        }
+        
+    }
+
 
 
     document.addEventListener( 'keydown', onKeyDown, false );
     function onKeyDown(event) {
         var xspeed = 1;
         var zspeed = 1;
-        var vright = new THREE.Vector3(0, 0, 1);
         if(event.keyCode == 39 && ayamp1.position.x < 24 ) {
             ayamp1.position.x += xspeed;
             ayamp1.rotation.y = 0;
@@ -152,11 +188,17 @@ function main() {
     function render(time) {
         time *= 0.001; // time to seconds
 
-        //jagung idle
-        if(jagung.name == 'Jagung'){
+        if (jagung.name == 'Jagung' && ayamp1.name == "Ayam") { //cek udah di load atau belum
+
+            // animasi idle jagung
             jagungIdle();
+
+            // cek makan jagung
+            if(ayamJagungCollision()) {
+                console.log('makan jagung');
+                spawnJagung();
+            }
         }
-            
 
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
