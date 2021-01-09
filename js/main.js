@@ -20,9 +20,9 @@ function main() {
 
 
     // controls
-    // const controls = new OrbitControls(camera, canvas);
-    // controls.target.set(0, 3, 0);
-    // controls.update();
+    const controls = new OrbitControls(camera, canvas);
+    controls.target.set(0, 3, 0);
+    controls.update();
 
     // light
     {
@@ -49,6 +49,15 @@ function main() {
             scene.add(root);
         });
     }
+    {
+        const gltfLoader = new GLTFLoader();
+
+        gltfLoader.load('obj/jagung.gltf', (gltf) => {
+            const root = gltf.scene;
+            root.position.set(2, 0, 0);
+            scene.add(root);
+        });
+    }
 
     const planegeom = new THREE.PlaneBufferGeometry(50, 50, 5, 5);
     const planemat = new THREE.MeshPhongMaterial({
@@ -61,12 +70,41 @@ function main() {
     
     // ! controls
     var ayamp1 = THREE.Object3D;
+    var jagung = THREE.Object3D;
+    console.log(jagung);
 
     ayamp1 = setTimeout(function(){ // nunggu async gltf di load 1 detik
         ayamp1 = scene.getObjectByName( "Ayam" );
         ayamp1.position.set(0, 0, 0);
         return ayamp1
     }, 1000);
+
+    jagung = setTimeout(function(){ // nunggu async gltf di load 1 detik
+        jagung = scene.getObjectByName( "Jagung" );
+        jagung.position.set(0, 1, 0);
+        console.log(jagung);
+        return jagung
+    }, 1000);
+
+
+    // animasi jagung
+    var upJagung = true;
+    var jagungMove = 0.005;
+    function jagungIdle() {
+        jagung.rotation.y += 0.05;
+
+        if (upJagung) {
+            jagung.position.y += jagungMove;
+        }else{
+            jagung.position.y -= jagungMove;
+        }
+        
+        if (jagung.position.y > 2){
+            upJagung = false;
+        }else if (jagung.position.y < 1) {
+            upJagung = true;
+        }
+    }
 
 
 
@@ -114,6 +152,12 @@ function main() {
     function render(time) {
         time *= 0.001; // time to seconds
 
+        //jagung idle
+        if(jagung.name == 'Jagung'){
+            jagungIdle();
+        }
+            
+
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
             camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -128,9 +172,6 @@ function main() {
 
         requestAnimationFrame(render);
     }
-    scene.traverse(function(object) {
-        console.log(object);
-    });
     requestAnimationFrame(render);
 }
 
