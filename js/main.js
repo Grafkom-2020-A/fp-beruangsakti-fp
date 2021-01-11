@@ -66,6 +66,14 @@ function main() {
     {
         const gltfLoader = new GLTFLoader();
 
+        gltfLoader.load('obj/StreetLamp.gltf', (gltf) => {
+            const root = gltf.scene;
+            scene.add(root);
+        });
+    }
+    {
+        const gltfLoader = new GLTFLoader();
+
         gltfLoader.load('obj/Grass.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
@@ -110,6 +118,7 @@ function main() {
     var jagung = THREE.Object3D;
     var grass = THREE.Object3D;
     var grass2 = THREE.Object3D;
+    var lamps = THREE.Object3D;
     
     console.log(jagung);
 
@@ -117,6 +126,12 @@ function main() {
         ayamp1 = scene.getObjectByName( "Ayam" );
         ayamp1.position.set(0, 0, 0);
         return ayamp1;
+    }, 1000);
+
+    lamps = setTimeout(function(){ // nunggu async gltf di load 1 detik
+        lamps = scene.getObjectByName( "Lamps" );
+        lamps.position.set(0, 0, -6);
+        return lamps;
     }, 1000);
 
     grass = setTimeout(function(){ // nunggu async gltf di load 1 detik
