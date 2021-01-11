@@ -38,23 +38,19 @@ function main() {
 
     // light
     {
-        const color = 0x404040;
-        const intensity = 1;
+        const color = 0xD28F2A;
+        const intensity = 0.8;
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(-1, 2, 4);
         scene.add(light);
-
-        var d = 300;
-        light.shadowCameraLeft = -d;
-        light.shadowCameraRight = d;
-        light.shadowCameraTop = d;
-        light.shadowCameraBottom = -d;
     }
     {
         const skyColor = 0xB1E1FF;  // light blue
         const groundColor = 0xB97A20;  // brownish orange
-        const intensity = 1;
+        const intensity = 0.6;
         const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+       
+        
         scene.add(light);
     }
 
@@ -295,7 +291,8 @@ function main() {
         const canvas = renderer.domElement;
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
-
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
         renderer.render(scene, camera);
 
         requestAnimationFrame(render);
