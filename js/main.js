@@ -281,10 +281,10 @@ function main() {
         }
         return needResize;
     }
-
+    var timer=300;
     function render(time) {
         time *= 0.001; // time to seconds
-
+        timer += -1;
         if (jagung.name == 'Jagung' && ayamp1.name == "Ayam") { //cek udah di load atau belum
 
             // animasi idle jagung
@@ -294,6 +294,11 @@ function main() {
             if(ayamJagungCollision()) {
                 console.log('makan jagung');
                 spawnJagung();
+                timer=300;
+            }
+            else if(timer==0){
+                spawnJagung();
+                timer=300;
             }
         }
 
