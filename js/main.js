@@ -70,14 +70,30 @@ function main() {
         });
     }
 
-    const planegeom = new THREE.PlaneBufferGeometry(50, 50, 5, 5);
-    const planemat = new THREE.MeshPhongMaterial({
+    // ! level
+    const grassgeom = new THREE.BoxBufferGeometry(50, 1, 20);
+    const grassmat = new THREE.MeshPhongMaterial({
         color: 0x196309,
         // side: THREE.DoubleSide
     });
-    const ground = new THREE.Mesh(planegeom, planemat);
-    scene.add(ground);
-    ground.rotation.x = -Math.PI / 2;
+    const ground = [
+        new THREE.Mesh(grassgeom, grassmat),
+        new THREE.Mesh(grassgeom, grassmat)
+    ]
+    scene.add(ground[0]);
+    ground[0].position.set(0, -0.5, 15);
+    scene.add(ground[1]);
+    ground[1].position.set(0, 0-0.5, -15);
+
+    const roadgeom = new THREE.BoxBufferGeometry(50, 1, 10);
+    const roadmat = new THREE.MeshPhongMaterial({
+        color: 0x918483,
+    });
+
+    const road = new THREE.Mesh(roadgeom, roadmat);
+    scene.add(road);
+    road.position.set(0, -0.5, 0);
+    
     
     // ! controls
     var ayamp1 = THREE.Object3D;
@@ -87,14 +103,14 @@ function main() {
     ayamp1 = setTimeout(function(){ // nunggu async gltf di load 1 detik
         ayamp1 = scene.getObjectByName( "Ayam" );
         ayamp1.position.set(0, 0, 0);
-        return ayamp1
+        return ayamp1;
     }, 1000);
 
     jagung = setTimeout(function(){ // nunggu async gltf di load 1 detik
         jagung = scene.getObjectByName( "Jagung" );
-        ayamp1.position.set(4, 0, 0);
+        jagung.position.set(4, 0, 0);
         console.log(jagung);
-        return jagung
+        return jagung;
     }, 1000);
 
     // jagung random position
