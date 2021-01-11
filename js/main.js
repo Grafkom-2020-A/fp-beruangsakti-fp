@@ -38,11 +38,17 @@ function main() {
 
     // light
     {
-        const color = 0xFFFFFF;
+        const color = 0x404040;
         const intensity = 1;
         const light = new THREE.DirectionalLight(color, intensity);
         light.position.set(-1, 2, 4);
         scene.add(light);
+
+        var d = 300;
+        light.shadowCameraLeft = -d;
+        light.shadowCameraRight = d;
+        light.shadowCameraTop = d;
+        light.shadowCameraBottom = -d;
     }
     {
         const skyColor = 0xB1E1FF;  // light blue
@@ -57,6 +63,14 @@ function main() {
         const gltfLoader = new GLTFLoader();
 
         gltfLoader.load('obj/ayam.gltf', (gltf) => {
+            const root = gltf.scene;
+            scene.add(root);
+        });
+    }
+    {
+        const gltfLoader = new GLTFLoader();
+
+        gltfLoader.load('obj/Grass.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
@@ -98,12 +112,36 @@ function main() {
     // ! controls
     var ayamp1 = THREE.Object3D;
     var jagung = THREE.Object3D;
+    var grass = THREE.Object3D;
+    var grass2 = THREE.Object3D;
+    
     console.log(jagung);
 
     ayamp1 = setTimeout(function(){ // nunggu async gltf di load 1 detik
         ayamp1 = scene.getObjectByName( "Ayam" );
         ayamp1.position.set(0, 0, 0);
         return ayamp1;
+    }, 1000);
+
+    grass = setTimeout(function(){ // nunggu async gltf di load 1 detik
+        grass = scene.getObjectByName( "Grass" );
+        grass.position.set(0, -0.2, 15);
+        var xGrass=15; var zGrass=15;
+
+        for(var i=0;i<2;i++){
+            grass2 = grass.clone();
+            grass2.position.set(xGrass, -0.2, zGrass);
+            scene.add(grass2);
+            xGrass *= -1;
+        }
+        for(var i=0;i<3;i++){
+            grass2 = grass.clone();
+            grass2.position.set(xGrass, -0.2, -15);
+            scene.add(grass2);
+            xGrass += -15;
+        }
+        
+        return grass;
     }, 1000);
 
     jagung = setTimeout(function(){ // nunggu async gltf di load 1 detik
