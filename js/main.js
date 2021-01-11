@@ -6,14 +6,26 @@ function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({canvas});
 
-    const fov = 75;
-    const aspect = 2;
-    const near = 0.1;
-    const far = 100;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    // perspective cam
+    // const fov = 75;
+    // const aspect = 2;
+    // const near = 0.1;
+    // const far = 100;
+    // const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
+    // camera.position.set(30, 20, 30);
+    // camera.lookAt(0, 0, 0);
+
+    // ortho cam
+    const cleft = canvas.clientWidth / -2;
+    const cright = canvas.clientWidth / 2;
+    const ctop = canvas.clientHeight / 2;
+    const cbot = canvas.clientHeight / -2;
+
+    const camera = new THREE.OrthographicCamera(cleft, cright, ctop, cbot);
     camera.position.set(30, 20, 30);
     camera.lookAt(0, 0, 0);
+
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xffffff );
@@ -80,12 +92,11 @@ function main() {
 
     jagung = setTimeout(function(){ // nunggu async gltf di load 1 detik
         jagung = scene.getObjectByName( "Jagung" );
-        ayamp1.position.set(0, 0, 0);
+        ayamp1.position.set(4, 0, 0);
         console.log(jagung);
         return jagung
     }, 1000);
 
-    
     // jagung random position
     var posx = 24;
     var netx = -24;
@@ -93,14 +104,34 @@ function main() {
     var netz = -24;
     var jagungPositionX = 0;
     var jagungPositionZ = 0;
+
     function spawnJagung() {
         jagungPositionX =  Math.floor(Math.random() * (posx - netx + 1)) + netx;
         jagungPositionZ =  Math.floor(Math.random() * (posz - netz + 1)) + netz;
 
-        console.log(jagungPositionX, jagungPositionZ);
-        jagung.position.set(jagungPositionX, 1, jagungPositionZ);
-        // jagung.position.x = jagungPositionX;
-        // jagung.position.z = jagungPositionZ;
+        if (jagungPositionX < 0) {
+            let tmpx = Math.abs(jagungPositionX);
+            if (tmpx%4 != 0) {
+                spawnJagung();
+                return;
+            }
+        }
+        if (jagungPositionZ < 0) {
+            let tmpz = Math.abs(jagungPositionZ);
+            if (tmpz%4 != 0) {
+                spawnJagung();
+                return;
+            }
+        }
+
+        if (jagungPositionX%4 == 0 && jagungPositionZ%4 == 0) {
+            console.log(jagungPositionX%4, jagungPositionZ%4);
+            jagung.position.set(jagungPositionX, 1, jagungPositionZ);
+        }else {
+            spawnJagung();
+            return;
+        }
+        
     }
 
     // animasi jagung
@@ -124,19 +155,19 @@ function main() {
 
     // collision
     function ayamJagungCollision() {
-        if (ayamp1.position.x == jagung.position.x - 1 &&
+        if (ayamp1.position.x == jagung.position.x &&
             ayamp1.position.z == jagung.position.z) {
             return true;
         }else if (
-            ayamp1.position.x == jagung.position.x + 1 &&
+            ayamp1.position.x == jagung.position.x &&
             ayamp1.position.z == jagung.position.z ){
             return true;
         }else if (
-            ayamp1.position.z == jagung.position.z + 1 &&
+            ayamp1.position.z == jagung.position.z &&
             ayamp1.position.x == jagung.position.x){
             return true;
         }else if (
-            ayamp1.position.z == jagung.position.z - 1 &&
+            ayamp1.position.z == jagung.position.z &&
             ayamp1.position.x == jagung.position.x){
             return true;
         }
@@ -147,8 +178,8 @@ function main() {
 
     document.addEventListener( 'keydown', onKeyDown, false );
     function onKeyDown(event) {
-        var xspeed = 1;
-        var zspeed = 1;
+        var xspeed = 4;
+        var zspeed = 4;
         if(event.keyCode == 39 && ayamp1.position.x < 24 ) {
             ayamp1.position.x += xspeed;
             ayamp1.rotation.y = 0;
@@ -168,6 +199,7 @@ function main() {
             ayamp1.position.z += zspeed;
             ayamp1.rotation.y = 0;
         }
+        console.log(ayamp1.position.x, ayamp1.position.z);
     }
     
     
