@@ -55,33 +55,33 @@ function main() {
     }
 
     // ! gltf loader
+    const gltfLoader = new GLTFLoader();
     {
-        const gltfLoader = new GLTFLoader();
-
         gltfLoader.load('obj/ayam.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
     }
     {
-        const gltfLoader = new GLTFLoader();
-
+        gltfLoader.load('obj/mobil.gltf', (gltf) => {
+            const root = gltf.scene;
+            root.rotation.y = Math.PI;
+            scene.add(root);
+        });
+    }
+    {
         gltfLoader.load('obj/StreetLamp.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
     }
     {
-        const gltfLoader = new GLTFLoader();
-
         gltfLoader.load('obj/Grass.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
         });
     }
     {
-        const gltfLoader = new GLTFLoader();
-
         gltfLoader.load('obj/jagung.gltf', (gltf) => {
             const root = gltf.scene;
             scene.add(root);
@@ -101,7 +101,7 @@ function main() {
     scene.add(ground[0]);
     ground[0].position.set(0, -0.5, 15);
     scene.add(ground[1]);
-    ground[1].position.set(0, 0-0.5, -15);
+    ground[1].position.set(0, -0.5, -15);
 
     const roadgeom = new THREE.BoxBufferGeometry(50, 1, 10);
     const roadmat = new THREE.MeshPhongMaterial({
@@ -119,12 +119,13 @@ function main() {
     var grass = THREE.Object3D;
     var grass2 = THREE.Object3D;
     var lamps = THREE.Object3D;
+    var mobil = THREE.Object3D;
     
     console.log(jagung);
 
     ayamp1 = setTimeout(function(){ // nunggu async gltf di load 1 detik
         ayamp1 = scene.getObjectByName( "Ayam" );
-        ayamp1.position.set(0, 0, 0);
+        ayamp1.position.set(0, 0, 8);
         return ayamp1;
     }, 1000);
 
@@ -132,6 +133,12 @@ function main() {
         lamps = scene.getObjectByName( "Lamps" );
         lamps.position.set(0, 0, -6);
         return lamps;
+    }, 1000);
+
+    mobil = setTimeout(function(){ // nunggu async gltf di load 1 detik
+        mobil = scene.getObjectByName( "Mobil" );
+        mobil.position.set(24, 0, 0);
+        return mobil;
     }, 1000);
 
     grass = setTimeout(function(){ // nunggu async gltf di load 1 detik
@@ -190,7 +197,7 @@ function main() {
         }
 
         if (jagungPositionX%4 == 0 && jagungPositionZ%4 == 0) {
-            console.log(jagungPositionX%4, jagungPositionZ%4);
+            // console.log(jagungPositionX, jagungPositionZ);
             jagung.position.set(jagungPositionX, 1, jagungPositionZ);
         }else {
             spawnJagung();
@@ -239,6 +246,20 @@ function main() {
         
     }
 
+    // mobil jalan
+    var mobilSpeed = 0.75;
+    var mobilTimer = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
+    
+    function mobilMove() {
+            if (mobil.position.x <= 24) {
+                mobil.position.x -= mobilSpeed;
+            }
+            if (mobil.position.x < -24) {
+                mobil.position.x = 24;
+            }
+       
+    }
+
 
 
     document.addEventListener( 'keydown', onKeyDown, false );
@@ -285,7 +306,9 @@ function main() {
     function render(time) {
         time *= 0.001; // time to seconds
         timer += -1;
-        if (jagung.name == 'Jagung' && ayamp1.name == "Ayam") { //cek udah di load atau belum
+        
+        if (jagung.name == 'Jagung' &&
+            ayamp1.name == "Ayam") { //cek udah di load atau belum
 
             // animasi idle jagung
             jagungIdle();
@@ -300,6 +323,11 @@ function main() {
                 spawnJagung();
                 timer=300;
             }
+        }
+
+        // mobil
+        if (mobil.name == 'Mobil') {
+            mobilMove();
         }
 
         if (resizeRendererToDisplaySize(renderer)) {
