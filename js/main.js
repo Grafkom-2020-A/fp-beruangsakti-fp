@@ -229,14 +229,18 @@ function main() {
     function ayamJagungCollision() {
         if (ayamp1.position.x == jagung.position.x &&
             ayamp1.position.z == jagung.position.z) {
+            score += 1;
+            scoring();
             return true;
         }else if (
             ayamp1.position.x == jagung.position.x &&
             ayamp1.position.z == jagung.position.z ){
+            score += 1;
             return true;
         }else if (
             ayamp1.position.z == jagung.position.z &&
             ayamp1.position.x == jagung.position.x){
+            
             return true;
         }else if (
             ayamp1.position.z == jagung.position.z &&
@@ -244,6 +248,20 @@ function main() {
             return true;
         }
         
+    }
+
+    //scoring
+    function scoring(){
+            var selectedObject = scene.getObjectByName("idScore");
+            scene.remove( selectedObject );
+
+            
+            var scoreSprite = makeTextSprite(score);
+            scoreSprite.name = "idScore";
+            scene.add(scoreSprite);
+
+            scoreSprite.position.y = 15;
+            scoreSprite.position.z = 10;
     }
 
     // mobil jalan
@@ -258,6 +276,10 @@ function main() {
                 mobil.position.x = 24;
             }
        
+    }
+
+    function randomMobil(){
+        
     }
 
 
@@ -287,6 +309,40 @@ function main() {
         }
         console.log(ayamp1.position.x, ayamp1.position.z);
     }
+
+    //textsprite
+    function makeTextSprite( message, parameters )
+    {
+        if ( parameters === undefined ) parameters = {};
+        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+        var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 50;
+        var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+        var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+        var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:0, g:0, b:0, a:1.0 };
+
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        context.font = "Bold " + fontsize + "px " + fontface;
+        
+        
+
+        context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+
+        context.lineWidth = borderThickness;
+    
+        context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+        context.fillText( message, borderThickness, fontsize + borderThickness);
+
+        var texture = new THREE.Texture(canvas) 
+        texture.needsUpdate = true;
+
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+        var sprite = new THREE.Sprite( spriteMaterial );
+        sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
+        return sprite;
+    }
     
     
     
@@ -302,11 +358,16 @@ function main() {
         }
         return needResize;
     }
+
+
+
     var timer=300;
+    var score=0;
+    //render
     function render(time) {
         time *= 0.001; // time to seconds
         timer += -1;
-        
+        makeTextSprite(score);
         if (jagung.name == 'Jagung' &&
             ayamp1.name == "Ayam") { //cek udah di load atau belum
 
