@@ -235,7 +235,7 @@ function main() {
         }else if (
             ayamp1.position.x == jagung.position.x &&
             ayamp1.position.z == jagung.position.z ){
-            score += 1;
+
             return true;
         }else if (
             ayamp1.position.z == jagung.position.z &&
@@ -245,6 +245,34 @@ function main() {
         }else if (
             ayamp1.position.z == jagung.position.z &&
             ayamp1.position.x == jagung.position.x){
+            return true;
+        }
+        
+    }
+
+    function ayamMobilCollision() {
+        if (ayamp1.position.x == mobil.position.x &&
+            ayamp1.position.z == mobil.position.z) {
+            score += -10;
+            scoring();
+            return true;
+        }else if (
+            ayamp1.position.x == mobil.position.x &&
+            ayamp1.position.z == mobil.position.z ){
+                score += -10;
+                scoring();
+            return true;
+        }else if (
+            ayamp1.position.z == mobil.position.z &&
+            ayamp1.position.x == mobil.position.x){
+                score += -10;
+                scoring();
+            return true;
+        }else if (
+            ayamp1.position.z == mobil.position.z &&
+            ayamp1.position.x == mobil.position.x){
+                score += -10;
+            scoring();
             return true;
         }
         
@@ -265,7 +293,7 @@ function main() {
     }
 
     // mobil jalan
-    var mobilSpeed = 0.75;
+    var mobilSpeed = 1;
     var mobilTimer = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
     
     function mobilMove() {
@@ -343,7 +371,7 @@ function main() {
         var texture = new THREE.Texture(canvas) 
         texture.needsUpdate = true;
 
-        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture } );
         var sprite = new THREE.Sprite( spriteMaterial );
         sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
         return sprite;
@@ -368,6 +396,8 @@ function main() {
 
     var timer=300;
     var score=0;
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
     //render
     function render(time) {
         time *= 0.001; // time to seconds
@@ -379,7 +409,7 @@ function main() {
 
             // animasi idle jagung
             jagungIdle();
-
+            ayamMobilCollision();
             // cek makan jagung
             if(ayamJagungCollision()) {
                 console.log('makan jagung');
@@ -407,8 +437,7 @@ function main() {
         const canvas = renderer.domElement;
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
+
         renderer.render(scene, camera);
 
         requestAnimationFrame(render);
