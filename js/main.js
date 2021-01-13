@@ -273,14 +273,19 @@ function main() {
                 mobil.position.x -= mobilSpeed;
             }
             if (mobil.position.x < -24) {
-                mobil.position.x = 24;
+              
+              mobil.visible = false;
+                if(mobilTimer == 0){
+                    mobilTimer = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
+                    mobil.position.x = 24;
+                    mobil.visible = true;
+                    
+                } 
             }
        
     }
 
-    function randomMobil(){
-        
-    }
+   
 
 
 
@@ -367,6 +372,7 @@ function main() {
     function render(time) {
         time *= 0.001; // time to seconds
         timer += -1;
+        mobilTimer += -1;
         makeTextSprite(score);
         if (jagung.name == 'Jagung' &&
             ayamp1.name == "Ayam") { //cek udah di load atau belum
@@ -387,8 +393,9 @@ function main() {
         }
 
         // mobil
+        
         if (mobil.name == 'Mobil') {
-            mobilMove();
+                mobilMove();  
         }
 
         if (resizeRendererToDisplaySize(renderer)) {
