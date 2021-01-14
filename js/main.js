@@ -255,11 +255,16 @@ function main() {
             b: 0,
         }
     };
+    var scoreTitleSprite = makeTextSprite('Health Points',{'fontsize': 30});
     var scoreSprite = makeTextSprite(score, hpSpriteParams);
     scoreSprite.name = "idScore";
     scene.add(scoreSprite);
+    scene.add(scoreTitleSprite, );
     scoreSprite.position.y = 15;
     scoreSprite.position.z = 10;
+    scoreTitleSprite.position.y = 20;
+    scoreTitleSprite.position.z = 15;
+    scoreTitleSprite.position.x = -5;
     var jagungSpriteParams = {
         'textColor': {
             r: 255,
@@ -274,6 +279,12 @@ function main() {
     jagungCountSprite.position.y = 15;
     jagungCountSprite.position.z = 20;
             
+    var jagungLabel = makeTextSprite("Score",{'fontsize': 30});
+    scene.add(jagungLabel);
+    jagungLabel.name = "idJagungLabel";
+    jagungLabel.position.y = 15;
+    jagungLabel.position.z = 15;
+    jagungLabel.position.x = -15;
     function scoring(){
             var selectedObject = scene.getObjectByName("idScore");
             scene.remove( selectedObject );
