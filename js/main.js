@@ -280,15 +280,40 @@ function main() {
     }
 
     //scoring
+    var score=20;
+    var jagungCountSprite=0;
+    var scoreSprite = makeTextSprite(score);
+    scoreSprite.name = "idScore";
+    scene.add(scoreSprite);
+    scoreSprite.position.y = 15;
+    scoreSprite.position.z = 10;
+
+    var jagungCount=0;
+    var jagungCountSprite = makeTextSprite(jagungCount);
+    scene.add(jagungCountSprite);
+    jagungCountSprite.name = "idJagungCount";
+    jagungCountSprite.position.y = 15;
+    jagungCountSprite.position.z = 20;
+            
     function scoring(){
             var selectedObject = scene.getObjectByName("idScore");
             scene.remove( selectedObject );
 
-            
-            var scoreSprite = makeTextSprite(score);
-            scoreSprite.name = "idScore";
+            scoreSprite = makeTextSprite(score);
             scene.add(scoreSprite);
+            
+            var selectedObject2 = scene.getObjectByName("idJagungCount");
+            scene.remove( selectedObject2 );
 
+            var jagungCountSprite = makeTextSprite(jagungCount);
+            scene.add(jagungCountSprite);
+            jagungCountSprite.name = "idJagungCount";
+            jagungCountSprite.position.y = 15;
+            jagungCountSprite.position.z = 20;
+
+
+
+            scoreSprite.name = "idScore";
             scoreSprite.position.y = 15;
             scoreSprite.position.z = 10;
     }
@@ -311,7 +336,6 @@ function main() {
                     
                 } 
             }
-       
     }
 
    
@@ -396,7 +420,6 @@ function main() {
 
 
     var timer=300;
-    var score=0;
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     //render
@@ -405,6 +428,7 @@ function main() {
         timer += -1;
         mobilTimer += -1;
         makeTextSprite(score);
+        makeTextSprite(jagungCount);
         if (jagung.name == 'Jagung' &&
             ayamp1.name == "Ayam") { //cek udah di load atau belum
 
@@ -413,13 +437,17 @@ function main() {
             ayamMobilCollision();
             // cek makan jagung
             if(ayamJagungCollision()) {
-                console.log('makan jagung');
+                jagungCount+=1;
+                console.log('makan jagung' + jagungCount);
                 spawnJagung();
                 timer=300;
+                scoring();
             }
             else if(timer==0){
                 spawnJagung();
                 timer=300;
+                score-=2;
+                scoring();
             }
         }
 
