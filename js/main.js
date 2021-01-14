@@ -302,10 +302,12 @@ function main() {
             jagungCountSprite.position.z = 20;
 
 
-
+          
             scoreSprite.name = "idScore";
             scoreSprite.position.y = 15;
             scoreSprite.position.z = 10;
+            
+            
     }
 
     // mobil jalan
@@ -472,6 +474,12 @@ function main() {
                     b: 0,
                 }
             };
+            scoring();
+            var shakeLabelY =  Math.floor(Math.random() * (15 - 14 + 1)) + 14;
+            var shakeLabelZ =  Math.floor(Math.random() * (10 - 9 + 1)) + 9;
+            var ScoreShake = scene.getObjectByName("idScore");
+            ScoreShake.position.y = shakeLabelY;
+            ScoreShake.position.z = shakeLabelZ;
         }else{
             hpSpriteParams = {
                 'textColor': {
@@ -480,12 +488,21 @@ function main() {
                     b: 0,
                 }
             };
+            scoring();
         }
 
         // mobil
         
         if (mobil.name == 'Mobil') {
                 mobilMove();  
+        }
+
+        // game reset
+        if (score <= 0) {
+            score = 20;
+            jagungCount = 0;
+            scoring();
+            ayamp1.position.set(0, 0, 8);
         }
 
         if (resizeRendererToDisplaySize(renderer)) {
