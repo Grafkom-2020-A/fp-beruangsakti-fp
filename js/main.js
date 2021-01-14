@@ -489,12 +489,28 @@ function main() {
         }
 
         // game reset
-        if (score <= 0) {
+        if (score <= 0){
+
+            Swal.fire({
+                position: 'top-enderro',
+                icon: 'error',
+                title: 'GAME OVER !',
+                showConfirmButton: false,
+                timer: 1500
+              })
             score = 20;
             jagungCount = 0;
             scoring();
             ayamp1.position.set(0, 0, 8);
+
+            }
+
+        if (score <= 0) {
+            
+          
         }
+
+        
 
         if (resizeRendererToDisplaySize(renderer)) {
             const canvas = renderer.domElement;
