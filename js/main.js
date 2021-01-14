@@ -25,6 +25,7 @@ function main() {
     const camera = new THREE.OrthographicCamera(cleft, cright, ctop, cbot);
     camera.position.set(30, 20, 30);
     camera.lookAt(0, 0, 0);
+    camera.zoom=15;
 
 
     const scene = new THREE.Scene();
