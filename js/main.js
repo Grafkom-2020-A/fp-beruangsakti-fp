@@ -233,22 +233,7 @@ function main() {
             score += 1;
             scoring();
             return true;
-        }else if (
-            ayamp1.position.x == jagung.position.x &&
-            ayamp1.position.z == jagung.position.z ){
-
-            return true;
-        }else if (
-            ayamp1.position.z == jagung.position.z &&
-            ayamp1.position.x == jagung.position.x){
-            
-            return true;
-        }else if (
-            ayamp1.position.z == jagung.position.z &&
-            ayamp1.position.x == jagung.position.x){
-            return true;
         }
-        
     }
 
     function ayamMobilCollision() {
@@ -257,39 +242,33 @@ function main() {
             score += -10;
             scoring();
             return true;
-        }else if (
-            ayamp1.position.x == mobil.position.x &&
-            ayamp1.position.z == mobil.position.z ){
-                score += -10;
-                scoring();
-            return true;
-        }else if (
-            ayamp1.position.z == mobil.position.z &&
-            ayamp1.position.x == mobil.position.x){
-                score += -10;
-                scoring();
-            return true;
-        }else if (
-            ayamp1.position.z == mobil.position.z &&
-            ayamp1.position.x == mobil.position.x){
-                score += -10;
-            scoring();
-            return true;
         }
-        
     }
 
     //scoring
     var score=20;
     var jagungCountSprite=0;
-    var scoreSprite = makeTextSprite(score);
+    var hpSpriteParams = {
+        'textColor': {
+            r: 0,
+            g: 0,
+            b: 0,
+        }
+    };
+    var scoreSprite = makeTextSprite(score, hpSpriteParams);
     scoreSprite.name = "idScore";
     scene.add(scoreSprite);
     scoreSprite.position.y = 15;
     scoreSprite.position.z = 10;
-
+    var jagungSpriteParams = {
+        'textColor': {
+            r: 255,
+            g: 255,
+            b: 0,
+        }
+    };
     var jagungCount=0;
-    var jagungCountSprite = makeTextSprite(jagungCount);
+    var jagungCountSprite = makeTextSprite(jagungCount,jagungSpriteParams);
     scene.add(jagungCountSprite);
     jagungCountSprite.name = "idJagungCount";
     jagungCountSprite.position.y = 15;
@@ -299,13 +278,13 @@ function main() {
             var selectedObject = scene.getObjectByName("idScore");
             scene.remove( selectedObject );
 
-            scoreSprite = makeTextSprite(score);
+            scoreSprite = makeTextSprite(score, hpSpriteParams);
             scene.add(scoreSprite);
             
             var selectedObject2 = scene.getObjectByName("idJagungCount");
             scene.remove( selectedObject2 );
 
-            var jagungCountSprite = makeTextSprite(jagungCount);
+            var jagungCountSprite = makeTextSprite(jagungCount,jagungSpriteParams);
             scene.add(jagungCountSprite);
             jagungCountSprite.name = "idJagungCount";
             jagungCountSprite.position.y = 15;
@@ -343,27 +322,49 @@ function main() {
 
 
     document.addEventListener( 'keydown', onKeyDown, false );
+    document.addEventListener( 'keyup', onKeyUp, false );
+    var keydown =true;
+    function onKeyUp(event) {
+        if(event.keyCode == 68 && !keydown ) {
+            keydown =true;
+        }
+        if(event.keyCode == 65 && !keydown) {
+            keydown =true;
+        }
+        if(event.keyCode == 87 && !keydown) {
+            keydown =true;
+        }
+        if(event.keyCode == 83 && !keydown) {
+            keydown =true;
+        }
+        
+    }
     function onKeyDown(event) {
         var xspeed = 4;
         var zspeed = 4;
-        if(event.keyCode == 39 && ayamp1.position.x < 24 ) {
+        // keydown=true;
+        if(event.keyCode == 68 && ayamp1.position.x < 24 && keydown ) {
             ayamp1.position.x += xspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y += 1.55;
+            keydown=false;
         }
-        if(event.keyCode == 37 && ayamp1.position.x > -24) {
+        if(event.keyCode == 65 && ayamp1.position.x > -24 && keydown) {
             ayamp1.position.x -= xspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y -= 1.55;
+            keydown=false;
         }
-        if(event.keyCode == 38 && ayamp1.position.z > -24) {
+        if(event.keyCode == 87 && ayamp1.position.z > -24 && keydown) {
             ayamp1.position.z -= zspeed;
             ayamp1.rotation.y = 0;
             ayamp1.rotation.y -= 3.10;
+            keydown=false;
         }
-        if(event.keyCode == 40 && ayamp1.position.z < 24) {
+        if(event.keyCode == 83 && ayamp1.position.z < 24 && keydown) {
             ayamp1.position.z += zspeed;
             ayamp1.rotation.y = 0;
+            keydown=false;
         }
         console.log(ayamp1.position.x, ayamp1.position.z);
     }
@@ -428,7 +429,7 @@ function main() {
         timer += -1;
         mobilTimer += -1;
         makeTextSprite(score);
-        makeTextSprite(jagungCount);
+        makeTextSprite(jagungCount,jagungSpriteParams);
         if (jagung.name == 'Jagung' &&
             ayamp1.name == "Ayam") { //cek udah di load atau belum
 
@@ -449,6 +450,25 @@ function main() {
                 score-=2;
                 scoring();
             }
+        }
+
+        // warna hp
+        if (score>0 && score <= 10) {
+            hpSpriteParams = {
+                'textColor': {
+                    r: 255,
+                    g: 0,
+                    b: 0,
+                }
+            };
+        }else{
+            hpSpriteParams = {
+                'textColor': {
+                    r: 0,
+                    g: 0,
+                    b: 0,
+                }
+            };
         }
 
         // mobil
