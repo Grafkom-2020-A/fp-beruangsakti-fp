@@ -6,15 +6,6 @@ function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({canvas});
 
-    // perspective cam
-    // const fov = 75;
-    // const aspect = 2;
-    // const near = 0.1;
-    // const far = 100;
-    // const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
-    // camera.position.set(30, 20, 30);
-    // camera.lookAt(0, 0, 0);
 
     // ortho cam
     const cleft = canvas.clientWidth / -2;
